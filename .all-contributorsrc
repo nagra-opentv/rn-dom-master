@@ -97,6 +97,32 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "arehman849",
+      "name": "anees ur rahiman",
+      "avatar_url": "https://avatars.githubusercontent.com/u/40396240?v=4",
+      "profile": "http://aneesrehman.herokuapp.com",
+      "contributions": [
+        "code",
+        "doc",
+        "bug",
+        "example",
+        "ideas",
+        "infra",
+        "platform"
+      ]
+    },
+    {
+      "login": "hps1978",
+      "name": "Harpreet Singh",
+      "avatar_url": "https://avatars.githubusercontent.com/u/74712321?v=4",
+      "profile": "http://www.nagra.com",
+      "contributions": [
+        "code",
+        "doc",
+        "ideas"
+      ]
     }
   ]
 }
