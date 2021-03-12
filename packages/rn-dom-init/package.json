@@ -1,0 +1,46 @@
+{
+  "name": "rn-dom-init",
+  "version": "1.0.0",
+  "description": "CLI to add rn-dom to existing react-native project",
+  "homepage": "https://github.com/nagra-opentv/rn-dom-master",
+  "bugs": {
+    "url": "https://github.com/nagra-opentv/rn-dom-master/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/nagra-opentv/rn-dom-master.git"
+  },
+  "license": "MIT",
+  "author": {
+    "name": "NagraOTV",
+    "email": "otvgithubadmin@nagra.com",
+    "url": "https://www.nagra.com/"
+  },
+  "bin": {
+    "react-native-dom-init": "index.js"
+  },
+  "scripts": {
+    "compile": "babel src -d build",
+    "watch": "watch \"yarn compile\" src"
+  },
+  "files": [
+    "index.js",
+    "build"
+  ],
+  "keywords": [
+    "react-native-dom-init",
+    "react-native-dom",
+    "react-native"
+  ],
+  "dependencies": {
+    "chalk": "^4.1.0",
+    "find-up": "^5.0.0",
+    "semver": "^7.3.4",
+    "yargs": "^16.1.1"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-preset-env": "^1.7.0",
+    "watch": "^1.0.2"
+  }
+}

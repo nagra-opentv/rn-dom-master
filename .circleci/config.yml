@@ -1,0 +1,202 @@
+aliases:
+  container_config: &container_config
+    docker:
+      - image: circleci/node:8
+    working_directory: ~/react-native-dom
+
+  npm_auth: &npm_auth
+    run:
+      name: Authenticate with registry
+      command: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > ~/.npmrc
+
+  restore_repo: &restore_repo
+    restore_cache:
+      keys:
+        - rn-dom-repo-{{ .Branch }}-{{ .Revision }}
+        - rn-dom-repo-{{ .Branch }}
+        - rn-dom-repo
+
+  npm_cache_key: &npm_cache_key v1-dependency-npm-{{ checksum "yarn.lock" }}
+
+  npm_backup_cache_key: &npm_backup_cache_key v1-dependency-npm
+
+  init_submodules: &init_submodules
+    run:
+      name: Initialize Submodules
+      command: git submodule update --init
+
+  restore_node_modules: &restore_node_modules
+    restore_cache:
+      keys:
+        - *npm_cache_key
+        - *npm_backup_cache_key
+
+  rndom_cache_key: &rndom_cache_key rn-dom-lib-{{ .Branch }}-{{ .Revision }}
+
+  restore_rndom: &restore_rndom
+    restore_cache:
+      keys:
+        - *rndom_cache_key
+
+  components_cache_key:
+    &components_cache_key rndom-components-{{ .Branch }}-{{ .Revision }}
+
+  restore_components: &restore_components
+    restore_cache:
+      keys:
+        - *components_cache_key
+
+  rntester_cache_key: &rntester_cache_key rntester-{{ .Branch }}-{{ .Revision }}
+
+  restore_rntester: &restore_rntester
+    restore_cache:
+      keys:
+        - *rntester_cache_key
+
+version: 2
+jobs:
+  checkout_repo:
+    <<: *container_config
+    steps:
+      - checkout
+      - *init_submodules
+      - run:
+          name: Download Dependencies
+          command: yarn install --frozen-lockfile
+      - save_cache:
+          key: rn-dom-repo-{{ .Branch }}-{{ .Revision }}
+          paths:
+            - .
+  lint:
+    <<: *container_config
+    steps:
+      - *restore_repo
+      - *restore_components
+      - run:
+          name: Run Linters
+          command: yarn lint
+
+  unittest:
+    <<: *container_config
+    steps:
+      - *restore_repo
+      - run:
+          name: Run Unittests
+          command: yarn test
+
+  build_react_native_dom:
+    <<: *container_config
+    steps:
+      - *restore_repo
+      - run:
+          name: Build react-native-dom
+          command: cd packages/react-native-dom && yarn compile
+      - save_cache:
+          key: *rndom_cache_key
+          paths:
+            - packages/react-native-dom/lib
+
+  build_components:
+    <<: *container_config
+    steps:
+      - *restore_repo
+      - run:
+          name: Build Custom Components
+          command: yarn compile:components
+      - save_cache:
+          key: *components_cache_key
+          paths:
+            - packages/rndom-redbox/lib
+            - packages/rndom-switch/lib
+
+  build_rntester:
+    <<: *container_config
+    steps:
+      - *restore_repo
+      - *restore_rndom
+      - *restore_components
+      - run:
+          name: Build RNTester
+          command: cd packages/react-native-dom && yarn build:rntester
+      - save_cache:
+          key: *rntester_cache_key
+          paths:
+            - ~/react-native-dom/packages/react-native-dom/dist
+
+  release_canary:
+    <<: *container_config
+    steps:
+      - *restore_repo
+      - *restore_rndom
+      - *restore_components
+      - *npm_auth
+      - run:
+          name: Publish Canary Release to NPM
+          command: yarn release:canary
+
+  smoke_test:
+    <<: *container_config
+    steps:
+      - *restore_repo
+      - run:
+          name: Run project initialization smoke test
+          command: yarn test:smoke
+
+  deploy_rntester:
+    <<: *container_config
+    steps:
+      - *restore_repo
+      - *restore_rntester
+      - run:
+          name: Deploy RNTester to now.sh
+          command: |
+            sudo npm install -unsafe-perm --global now
+            cd packages/react-native-dom
+            URL=$(now -t ${NOW_TOKEN})
+            now alias -t ${NOW_TOKEN} ${URL} rntester.now.sh
+
+workflows:
+  version: 2
+  build:
+    jobs:
+      - checkout_repo
+      - unittest:
+          requires:
+            - checkout_repo
+      - build_react_native_dom:
+          requires:
+            - unittest
+      - build_components:
+          requires:
+            - unittest
+      - lint:
+          requires:
+            - build_components
+      - release_canary:
+          requires:
+            - lint
+            - build_components
+            - build_react_native_dom
+          filters:
+            branches:
+              only:
+                - master
+      - smoke_test:
+          requires:
+            - release_canary
+          filters:
+            branches:
+              only:
+                - master
+      - build_rntester:
+          requires:
+            - lint
+            - build_components
+            - build_react_native_dom
+      - deploy_rntester:
+          requires:
+            - build_rntester
+          filters:
+            branches:
+              only:
+                - master

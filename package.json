@@ -1,0 +1,90 @@
+{
+  "name": "rn-dom-master",
+  "version": "0.0.1",
+  "private": true,
+  "description": "",
+  "keywords": [],
+  "homepage": "https://github.com/nagra-opentv/rn-dom-master",
+  "bugs": {
+    "url": "https://github.com/nagra-opentv/rn-dom-master/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/nagra-opentv/rn-dom-master.git"
+  },
+  "license": "MIT",
+  "author": {
+    "name": "NagraOTV",
+    "email": "otvgithubadmin@nagra.com",
+    "url": "https://www.nagra.com/"
+  },
+  "workspaces": {
+    "packages": [
+      "packages/*"
+    ],
+    "nohoist": [
+      "**/react-native",
+      "**/react-native/**",
+      "**/@babel/runtime",
+      "**/@abel/runtime/**",
+      "**/pepjs",
+      "**/pepjs/**",
+      "**/webcomponentsjs",
+      "**/webcomponentsjs/**",
+      "**/web-animations-js",
+      "**/web-animations-js/**",
+      "**/react-native-dom/**"
+    ]
+  },
+  "scripts": {
+    "clean": "shx rm -rf packages/*/lib",
+    "precommit": "lint-staged",
+    "compile": "lerna run compile --stream",
+    "compile:components": "lerna run compile --scope rndom-* --stream",
+    "contributors:add": "all-contributors add",
+    "contributors:generate": "all-contributors generate",
+    "fmt": "prettier --write 'packages/**/*.js'",
+    "lint": "flow check && eslint packages",
+    "release:canary": "lerna publish minor --canary --yes",
+    "run-examples": "cd packages/react-native-dom && yarn run-examples",
+    "test": "lerna run test",
+    "test:smoke": "node scripts/smoke.js"
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
+  },
+  "devDependencies": {
+    "all-contributors-cli": "^4.11.1",
+    "babel-eslint": "^8.2.3",
+    "cz-conventional-changelog": "^2.1.0",
+    "eslint": "^5.0.1",
+    "eslint-import-resolver-lerna": "^1.0.0",
+    "eslint-plugin-import": "^2.11.0",
+    "eslint-plugin-prettier": "^2.6.0",
+    "flow-bin": "0.89.0",
+    "husky": "^0.14.3",
+    "lerna": "3.4.3",
+    "lint-staged": "^7.2.2",
+    "prettier": "^1.12.1",
+    "shelljs": "^0.8.2",
+    "shx": "^0.2.2",
+    "sort-package-json": "^1.13.0",
+    "wait-port": "^0.2.2"
+  },
+  "lint-staged": {
+    "package.json": [
+      "sort-package-json",
+      "git add"
+    ],
+    "*.js": [
+      "eslint --fix",
+      "git add"
+    ],
+    "*.{js,json,css,md}": [
+      "prettier --write",
+      "git add"
+    ]
+  }
+}

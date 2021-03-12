@@ -1,0 +1,9 @@
+node_modules
+.npmrc
+flow
+jest
+Libraries
+index.js
+interface.js
+rn-get-polyfills.js
+!src/Libraries

@@ -1,0 +1,50 @@
+{
+  "name": "rn-dom",
+  "version": "0.0.1",
+  "homepage": "https://github.com/nagra-opentv/rn-dom-master",
+  "bugs": {
+    "url": "https://github.com/nagra-opentv/rn-dom-master/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/nagra-opentv/rn-dom-master.git"
+  },
+  "license": "MIT",
+  "author": {
+    "name": "NagraOTV",
+    "email": "otvgithubadmin@nagra.com",
+    "url": "https://www.nagra.com/"
+  },
+  "main": "index.js",
+  "scripts": {
+    "compile": "just-scripts build"
+  },
+  "keywords": [
+    "react-native",
+    "rn-dom"
+  ],
+  "files": [
+    "react-native.config.js",
+    "metro.config.js",
+    "rn-get-polyfills.js",
+    "index.js",
+    "index.dom.js",
+    "generateDom.js",
+    "dom",
+    "scripts",
+    "Libraries"
+  ],
+  "devDependencies": {
+    "just-scripts": "^1.2.6",
+    "react-native": "0.62.2"
+  },
+  "peerDependencies": {
+    "react-native": "~0.62.0"
+  },
+  "dependencies": {
+    "metro-config": "^0.64.0",
+    "metro-resolver": "^0.64.0",
+    "rn-dom-cli": "^1.0.0",
+    "rn-dom-renderer": "^1.0.0"
+  }
+}
