@@ -1,6 +1,6 @@
 {
   "name": "rn-dom-cli",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "CLI for rn-dom",
   "main": "build/index.js",
   "homepage": "https://github.com/nagra-opentv/rn-dom-master",
