@@ -37,18 +37,12 @@
     ]
   },
   "scripts": {
-    "clean": "shx rm -rf packages/*/lib",
-    "precommit": "lint-staged",
+    "clean": "shx rm -rf packages/*/build",
     "compile": "lerna run compile --stream",
-    "compile:components": "lerna run compile --scope rndom-* --stream",
     "contributors:add": "all-contributors add",
     "contributors:generate": "all-contributors generate",
-    "fmt": "prettier --write 'packages/**/*.js'",
     "lint": "flow check && eslint packages",
     "release:canary": "lerna publish minor --canary --yes",
-    "run-examples": "cd packages/react-native-dom && yarn run-examples",
-    "test": "lerna run test",
-    "test:smoke": "node scripts/smoke.js"
   },
   "config": {
     "commitizen": {
