@@ -43,6 +43,8 @@
   },
   "dependencies": {
     "metro-config": "^0.64.0",
-    "metro-resolver": "^0.64.0"
+    "metro-resolver": "^0.64.0",
+    "rn-dom-cli": "^0.0.1",
+    "rn-dom-renderer": "^0.0.1"
   }
 }
