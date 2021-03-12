@@ -1,6 +1,6 @@
 {
   "name": "rn-dom-renderer",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "renderer for rn-dom (to render react-native components on browser)",
   "main": "build/ReactDom.js",
   "homepage": "https://github.com/nagra-opentv/rn-dom-master",
