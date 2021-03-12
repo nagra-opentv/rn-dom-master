@@ -1,6 +1,6 @@
 {
   "name": "rn-dom-init",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "CLI to add rn-dom to existing react-native project",
   "homepage": "https://github.com/nagra-opentv/rn-dom-master",
   "bugs": {
